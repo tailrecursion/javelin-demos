@@ -1,0 +1,10 @@
+body {
+    font-family: sans-serif;
+    color: navy;
+}
+
+pre {
+    padding: 10px;
+    background-color: black;
+    color: chartreuse;
+}

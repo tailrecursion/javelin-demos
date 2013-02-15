@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <title>Javelin Frequencies Demo</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <style>
+      table {
+      	border: 1px solid #DFDFDF;
+      	background-color: #F9F9F9;
+      	width: 50%;
+      	-moz-border-radius: 3px;
+      	-webkit-border-radius: 3px;
+      	border-radius: 3px;
+      	color: #333;
+      }
+      table td, table th {
+      	border-top-color: white;
+      	border-bottom: 1px solid #DFDFDF;
+      	color: #555;
+      }
+      table th {
+      	text-shadow: rgba(255, 255, 255, 0.796875) 0px 1px 0px;
+      	font-weight: normal;
+      	padding: 7px 7px 8px;
+      	text-align: left;
+      	line-height: 1.3em;
+      	font-size: 14px;
+      }
+      table td {
+      	font-size: 12px;
+      	padding: 4px 7px 2px;
+      	vertical-align: top;
+      }
+    </style>
+  </head>
+  <body onload="tailrecursion.javelin_demos.frequencies.start()">
+
+    <p>
+      <em>This <a href="https://github.com/tailrecursion/javelin/">Javelin</a> demo generates random numbers and tells us important things about them.</em>
+    </p>
+
+    <h3>Metrics</h3>
+
+    <table>
+      <thead>
+        <th>Metric</th>
+        <th>Current Value</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Status</td>
+          <td id="status"></td>
+        </tr>
+        <tr>
+          <td>Most Frequent</td>
+          <td id="most-frequent"></td>
+        </tr>
+        <tr>
+          <td>Number Seen</td>
+          <td id="n-seen"></td>
+        </tr>
+        <tr>
+          <td>Percent Even</td>
+          <td id="percent-even"></td>
+        </tr>
+        <tr>
+          <td>Least Frequent</td>
+          <td id="least-frequent"></td>
+        </tr>
+        <tr>
+          <td>Number Distinct</td>
+          <td id="n-distinct"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Histogram</h3>
+
+    <div id="histogram"></div>
+
+    <h3>Knobs</h3>
+    Speed: <input type="range" id="ms" min="-1" max="1000"></input><br/>
+    Rand Max: <input type="text" id="rand-max"></input><br/><br/>
+
+    <a href="https://github.com/tailrecursion/javelin-demos/blob/master/src/cljs/tailrecursion/javelin-demos/frequencies.cljs">ClojureScript source</a>
+    <script src='demos.js'></script>
+  </body>
+</html>
