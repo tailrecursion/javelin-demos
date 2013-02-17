@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <title>Javelin Form Validation Demo</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <style type="text/css">
+      fieldset div {
+              margin:0.3em 0;
+              clear:both;
+      }
+      
+      form {
+              margin:1em;
+              width:15em;
+      }
+      
+      label {
+              float:none;
+              width:12em;
+              display:block;
+              clear:both;
+      }
+      
+      legend {
+              color:#0b77b7;
+              font-size:1.4em;
+      }
+
+      legend span {
+              width:10em;
+              text-align:right;
+      }
+
+      input {
+              font-size: 16pt;
+              padding:0.15em;
+              width:10em;
+              border:1px solid #ddd;
+              display:block;
+              float:left;
+      }
+
+      fieldset {
+              border:1px solid #ddd;
+              padding:0 0.5em 0.5em;
+      }
+
+      input.good {
+        -moz-box-shadow: inset 2px 2px 10px green;
+        box-shadow:      inset 2px 2px 10px green;
+      }
+
+      input.bad {
+        -moz-box-shadow: inset 2px 2px 10px orange;
+        box-shadow:      inset 2px 2px 10px orange;
+      }
+    </style>
+  </head>
+  <body onload="tailrecursion.javelin_demos.form_validation.start()">
+
+    <em>This <a href="https://github.com/tailrecursion/javelin/">Javelin</a> demo validates form inputs.</em><br/>
+
+    <form id="form">
+      <fieldset>
+        <legend>Sign Up</legend>
+        
+        <div>
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name">
+        </div>
+
+        <div>
+          <label for="phone">Phone (with area code)</label>
+          <input type="text" name="phone" id="phone">
+        </div>
+
+        <div>
+          <label for="age">Age</label>
+          <input type="text" name="age" id="age">
+        </div>
+
+        <div>
+          <label for="email">Email Address</label>
+          <input type="email" name="email" id="email">
+        </div>
+
+        <div>
+          <label for="password">Password (5 char min)</label>
+          <input type="password" name="password" id="password">
+        </div>
+
+        <div>
+          <label for="submit"></label>
+          <input type="submit" value="Sign Up &rarr;" id="submit">
+        </div>
+      </fieldset>
+    </form>
+    <a href="https://github.com/tailrecursion/javelin-demos/blob/master/src/cljs/tailrecursion/javelin-demos/form_validation.cljs">ClojureScript source</a>
+    <script src='demos.js'></script>
+  </body>
+</html>
