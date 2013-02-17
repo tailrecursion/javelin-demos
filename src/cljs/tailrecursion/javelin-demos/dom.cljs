@@ -118,7 +118,8 @@
   "Creates and returns a cell backed by the form input id-or-elem.
   Takes the same options as form-cell plus:
 
-  :default - The initial value of the created cell."
+  :default - The initial value of the created cell. Defaults to the
+  empty string."
   [id-or-elem & opts]
   (let [default (get (apply hash-map opts) :default "")]
     (with-let [in-cell (cell 'default)]
