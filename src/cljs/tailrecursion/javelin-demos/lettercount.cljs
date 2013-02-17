@@ -12,7 +12,7 @@
 
 (defn ^:export start []
 
-  (let [text (form-cell "#text" :default "")
+  (let [text (form-cell "#text")
         length (cell (count text))]
     (.focus (by-id "#text"))
     (cell (html! "#count" "Length: %s" length))))

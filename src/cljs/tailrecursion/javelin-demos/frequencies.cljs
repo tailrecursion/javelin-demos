@@ -39,9 +39,9 @@
     (aset-in table ["style" "textAlign"] "center")
     (set! (.-innerHTML parent) "")
     (doseq [[n v] (into (sorted-map) pmap)]
-      (let [bar-td (.createElement js/document "td")
+      (let [bar-td  (.createElement js/document "td")
             bar-div (.createElement js/document "div")
-            val-td (.createElement js/document "td")]
+            val-td  (.createElement js/document "td")]
         (aset-in bar-td  ["style" "verticalAlign"] "bottom")
         (aset-in bar-div ["style" "width"] (str bar-width "px"))
         (aset-in bar-div ["style" "height"] (str (scale-height v) "px"))
