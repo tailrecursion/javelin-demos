@@ -9,7 +9,8 @@
 (ns tailrecursion.javelin-demos.dom
   "Utilities for massaging strings and interacting with the DOM."
   (:require [clojure.browser.event :as event]
-            [goog.dom.forms        :as form])
+            [goog.dom.forms        :as form]
+            [goog.dom.classes      :as classes])
   (:require-macros [tailrecursion.javelin.macros :refer [cell with-let]]))
 
 (defn by-id
@@ -65,33 +66,87 @@
   (let [n (js/parseInt s)]
     (if (js/isNaN n) default n)))
 
-(defn form-cell
-  "Returns an input cell backed by the form input id-or-elem.
+(defn input-to
+  "Attaches form input at id-or-elem to the existing input cell backbone.
+
+  If ks is empty, resets backbone to the input value.  If ks is
+  non-empty, swaps backbone with assoc-in using ks as the path.
+
   Understands the following additional options:
 
-  :default - The default value of the resulting input cell. This value
-  is also inserted as the form element's initial value.  Defaults to nil.
+  :insert-default? - If true, immediately insert the default value
+  into the backing input.  Defaults to false.
 
   :type - The type to parse the form input's value string as.  Known
   types are: :string, :int, :float.  Defaults to :string.
 
   :triggers - A set of strings or keywords of event types that should
-  trigger reset of the input cell with the form element value.  Event
-  types are those known to clojure.browser.events.  For a
-  comprehensive list, see
+  trigger backbone mutation.  Event types are those known to
+  clojure.browser.events.  For a comprehensive list, see
   http://closure-library.googlecode.com/svn/docs/closure_goog_events_eventtype.js.source.html.
-  Defaults to #{\"input\"}."
-  [id-or-elem & {:keys [default triggers
-                        type]
-                 :or {triggers #{"input"}
-                      type :string}}]
-  (let [parsers {:string identity
+  Defaults to #{\"input\"}.
+
+  :validator - Function of a single argument that is applied to every
+  new input value.  If it returns true, the new input value is added
+  to the backbone.  The validator is applied to the existing backbone
+  value once when this function is called, but its return value is
+  discarded."
+  [backbone ks id-or-elem
+   & {:keys [triggers type
+             insert-default? validator]
+      :or {triggers #{"input"}
+           type :string
+           insert-default? true
+           validator (constantly true)}}]
+  (let [default (if (seq ks) (get-in @backbone ks) @backbone)
+        parsers {:string identity
                  :float (partial parse-float default)
                  :int (partial parse-int default)}
         elem (by-id id-or-elem)]
-    (insert! elem (str default))
+    (validator default)
+    (if insert-default? (insert! elem (str default)))
+    (doseq [t triggers]
+      (event/listen elem
+                    t
+                    #(let [newv ((parsers type) (form/getValue elem))]
+                       (if (validator newv)
+                         (if (seq ks)
+                           (swap! backbone assoc-in ks newv)
+                           (reset! backbone newv))))))))
+
+(defn form-cell
+  "Creates and returns a cell backed by the form input id-or-elem.
+  Takes the same options as form-cell plus:
+
+  :default - The initial value of the created cell."
+  [id-or-elem & opts]
+  (let [default (get (apply hash-map opts) :default "")]
     (with-let [in-cell (cell 'default)]
-      (doseq [t triggers]
-        (event/listen elem
-                      t
-                      #(reset! in-cell ((parsers type) (form/getValue elem))))))))
+      (apply input-to in-cell [] id-or-elem opts))))
+
+(defn add-remove!
+  "Adds the classes in add-classes to id-or-elem and removes the
+  classes in remove-classes from id-or-elem.
+
+  Returns the modified element."
+  [id-or-elem add-classes remove-classes]
+  (with-let [elem (by-id id-or-elem)]
+    (doseq [add add-classes]
+      (classes/add elem (or add "")))
+    (doseq [remove remove-classes]
+      (classes/remove elem (or remove "")))))
+
+(defn validator
+  "For use with the input-to and form-cell :validator option.
+
+  Returns a function that when invoked with a value, applies pred.
+  If (pred v) and good-class was specified, adds the class to
+  id-or-elem and removes bad-class.  If (not (pred v)), adds bad-class
+  and removes good-class."
+  [id-or-elem pred bad-class & [good-class]]
+  (fn [v]
+    (let [elem (by-id id-or-elem)]
+      (with-let [valid? (pred v)]
+        (if valid?
+          (add-remove! elem [good-class] [bad-class])
+          (add-remove! elem [bad-class] [good-class]))))))
