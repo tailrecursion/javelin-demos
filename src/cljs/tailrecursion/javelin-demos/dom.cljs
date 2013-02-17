@@ -102,17 +102,17 @@
         parsers {:string identity
                  :float (partial parse-float default)
                  :int (partial parse-int default)}
-        elem (by-id id-or-elem)]
+        elem (by-id id-or-elem)
+        update! #(if (seq ks)
+                   (swap! backbone assoc-in ks %)
+                   (reset! backbone %))]
     (validator default)
     (if insert-default? (insert! elem (str default)))
     (doseq [t triggers]
       (event/listen elem
                     t
                     #(let [newv ((parsers type) (form/getValue elem))]
-                       (if (validator newv)
-                         (if (seq ks)
-                           (swap! backbone assoc-in ks newv)
-                           (reset! backbone newv))))))))
+                       (update! (if (validator newv) newv default)))))))
 
 (defn form-cell
   "Creates and returns a cell backed by the form input id-or-elem.
