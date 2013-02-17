@@ -116,7 +116,7 @@
 
 (defn form-cell
   "Creates and returns a cell backed by the form input id-or-elem.
-  Takes the same options as form-cell plus:
+  Takes the same options as input-to plus:
 
   :default - The initial value of the created cell. Defaults to the
   empty string."
