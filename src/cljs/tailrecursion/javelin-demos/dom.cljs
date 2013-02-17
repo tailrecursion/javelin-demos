@@ -31,7 +31,7 @@
   "Sets the value in a nested JavaScript array, where ks is a sequence
   of fields."
   [arr ks value]
-  (aset (reduce #(aget %1 %2) arr (butlast ks)) (last ks) value))
+  (aset (reduce aget arr (butlast ks)) (last ks) value))
 
 (defn insert!
   "Inserts string s as the value of the attribute fld in element
