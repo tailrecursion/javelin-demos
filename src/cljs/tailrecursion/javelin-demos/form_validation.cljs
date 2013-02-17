@@ -13,7 +13,7 @@
 
 (def preds
   {:name     #(not (empty? %))
-   :phone    #(boolean (#{10 11} (count (re-seq #"\d" %))))
+   :phone    #(= 10 (count (re-seq #"\d" %)))
    :age      #(> % 0)
    :email    #(boolean (re-matches #".+@.+\..+" %))
    :password #(>= (count %) 5)})
