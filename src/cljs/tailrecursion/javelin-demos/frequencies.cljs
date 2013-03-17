@@ -10,7 +10,7 @@
   (:require-macros
    [tailrecursion.javelin.macros :refer [cell]])
   (:require
-   [tailrecursion.javelin :refer [all! distinct! timer*]]
+   tailrecursion.javelin
    [tailrecursion.javelin-demos.dom :refer [html! aset-in by-id form-cell]]
    [tailrecursion.priority-map :refer [priority-map]]))
 
@@ -63,9 +63,8 @@
         slider         (form-cell "#ms" :type :int, :default 500)
         interval       (cell (if (neg? slider) slider (- 1000 slider)))
 
-        ;; data collection
-        rand           (all! (timer* interval (fn [_] (rand-int @rand-max)) (rand-int @rand-max)))
-        freqs          (distinct! (cell (merge-with + ~(priority-map) {rand 1})))
+        ;; stem cell
+        freqs          (cell '(priority-map (rand-int @rand-max) 1))
 
         ;; analysis
         n-seen         (cell (->> freqs vals (reduce +)))
@@ -78,6 +77,11 @@
                                   sentence))
         least-frequent (cell (key (peek freqs)))
         n-distinct     (cell (count freqs))]
+
+    ;; add random numbers to stem cell
+    ((fn self []
+       (swap! freqs update-in [(rand-int @rand-max)] (fnil inc 1))
+       (.setTimeout js/window self @interval)))
 
     ;; display
     (cell (html! "#status" "%s (interval is %s milliseconds)"
