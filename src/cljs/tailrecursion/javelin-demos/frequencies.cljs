@@ -80,7 +80,7 @@
 
     ;; add random numbers to stem cell
     ((fn self []
-       (swap! freqs update-in [(rand-int @rand-max)] (fnil inc 1))
+       (swap! freqs update-in [(rand-int @rand-max)] (fnil inc 0))
        (.setTimeout js/window self @interval)))
 
     ;; display
