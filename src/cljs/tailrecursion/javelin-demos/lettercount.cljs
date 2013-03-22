@@ -7,7 +7,8 @@
 ;   You must not remove this notice, or any other, from this software.
 
 (ns tailrecursion.javelin-demos.lettercount
-  (:require [tailrecursion.javelin-demos.dom :refer [form-cell by-id html!]])
+  (:require [tailrecursion.javelin-demos.dom :refer [form-cell by-id html!]]
+            tailrecursion.javelin)
   (:require-macros [tailrecursion.javelin.macros :refer [cell]]))
 
 (defn ^:export start []

@@ -61,7 +61,7 @@
   (let [;; user input
         rand-max       (form-cell "#rand-max" :type :int, :default 10, :triggers #{"change"})
         slider         (form-cell "#ms" :type :int, :default 500)
-        interval       (cell (if (neg? slider) slider (- 1000 slider)))
+        interval       (cell (if (neg? slider) 0 (- 1001 slider)))
 
         ;; stem cell
         freqs          (cell '(priority-map (rand-int @rand-max) 1))
@@ -78,15 +78,18 @@
         least-frequent (cell (key (peek freqs)))
         n-distinct     (cell (count freqs))]
 
+    (cell
+     (.log js/console (pr-str (reduce + (vals freqs)))))
+
     ;; add random numbers to stem cell
     ((fn self []
-       (swap! freqs update-in [(rand-int @rand-max)] (fnil inc 0))
-       (.setTimeout js/window self @interval)))
+       (let [sleep @interval]
+         (if (pos? sleep)
+           (swap! freqs update-in [(rand-int @rand-max)] (fnil inc 0)))
+         (.setTimeout js/window self sleep))))
 
     ;; display
-    (cell (html! "#status" "%s (interval is %s milliseconds)"
-                 (if (neg? interval) "Stopped" "Running")
-                 interval))
+    (cell (html! "#status" "%s" (if (zero? interval) "Stopped" "Running")))
     (cell (html! "#most-frequent" "%s" most-frequent))
     (cell (html! "#n-seen" "%s" n-seen))
     (cell (html! "#percent-even" "%s%" %-even))

@@ -8,7 +8,8 @@
 
 (ns tailrecursion.javelin-demos.form-validation
   (:require [tailrecursion.javelin-demos.dom :refer [input-to by-id validator]]
-            [clojure.browser.event :as event])
+            [clojure.browser.event :as event]
+            tailrecursion.javelin)
   (:require-macros [tailrecursion.javelin.macros :refer [cell]]))
 
 (def preds
