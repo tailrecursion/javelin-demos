@@ -12,7 +12,7 @@ This project contains a variety of programs that demonstrate the use
 of Javelin to create reactive web applications.
 
 You can see some version of the demos running at [Javelin
-Demos](http://tailrecursion.com/~alan/javelin-demos/).
+Demos](https://dl.dropboxusercontent.com/u/12379861/javelin_demos/index.html).
 
 ## Building Locally
 
