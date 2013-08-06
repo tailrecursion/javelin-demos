@@ -6,7 +6,7 @@
   :dependencies [[tailrecursion/cljs-priority-map "1.0.0"]
                  [tailrecursion/javelin "1.0.0-SNAPSHOT"]
                  [alandipert/desiderata "1.0.1"]]
-  :plugins [[lein-cljsbuild "0.3.0"]]
+  :plugins [[lein-cljsbuild "0.3.2"]]
   :cljsbuild {:builds
               {:demos
                {:source-paths ["src/cljs"]
