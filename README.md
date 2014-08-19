@@ -4,9 +4,6 @@ align="right" width="152"/>
 
 # Javelin Demos
 
-alt="tailrecursion/javelin logo" title="tailrecursion/javelin logo"
-align="right" width="152"/>
-
 [Javelin](https://github.com/tailrecursion/javelin) is a
 spreadsheet-like Functional Reactive Programming (FRP) library for
 ClojureScript.
