@@ -8,9 +8,9 @@
 
 (ns tailrecursion.javelin-demos.frequencies
   (:require-macros
-   [tailrecursion.javelin.macros :refer [cell]])
+   [tailrecursion.javelin :refer [cell=]])
   (:require
-   tailrecursion.javelin
+   [tailrecursion.javelin :refer [cell]]
    [tailrecursion.javelin-demos.dom :refer [html! aset-in by-id form-cell]]
    [tailrecursion.priority-map :refer [priority-map]]))
 
@@ -61,24 +61,24 @@
   (let [;; user input
         rand-max       (form-cell "#rand-max" :type :int, :default 10, :triggers #{"change"})
         slider         (form-cell "#ms" :type :int, :default 500)
-        interval       (cell (if (neg? slider) 0 (- 1001 slider)))
+        interval       (cell= (if (neg? slider) 0 (- 1001 slider)))
 
         ;; stem cell
-        freqs          (cell '(priority-map (rand-int @rand-max) 1))
+        freqs          (cell (priority-map (rand-int @rand-max) 1))
 
         ;; analysis
-        n-seen         (cell (->> freqs vals (reduce +)))
-        n-even         (cell (->> freqs (filter (comp even? first)) (map second) (reduce +)))
-        %-even         (cell (->> n-seen (/ n-even) (* 100) (.round js/Math)))
-        most-frequent  (cell (->> (rseq freqs)
-                                  (partition-by second)
-                                  first
-                                  (map first)
-                                  sentence))
-        least-frequent (cell (key (peek freqs)))
-        n-distinct     (cell (count freqs))]
+        n-seen         (cell= (->> freqs vals (reduce +)))
+        n-even         (cell= (->> freqs (filter (comp even? first)) (map second) (reduce +)))
+        %-even         (cell= (->> n-seen (/ n-even) (* 100) (.round js/Math)))
+        most-frequent  (cell= (->> (rseq freqs)
+                                   (partition-by second)
+                                   first
+                                   (map first)
+                                   sentence))
+        least-frequent (cell= (key (peek freqs)))
+        n-distinct     (cell= (count freqs))]
 
-    (cell
+    (cell=
      (.log js/console (pr-str (reduce + (vals freqs)))))
 
     ;; add random numbers to stem cell
@@ -89,13 +89,13 @@
          (.setTimeout js/window self sleep))))
 
     ;; display
-    (cell (html! "#status" "%s" (if (zero? interval) "Stopped" "Running")))
-    (cell (html! "#most-frequent" "%s" most-frequent))
-    (cell (html! "#n-seen" "%s" n-seen))
-    (cell (html! "#percent-even" "%s%" %-even))
-    (cell (html! "#least-frequent" "%s" least-frequent))
-    (cell (html! "#n-distinct" "%s" n-distinct))
-    (cell (histogram! "#histogram" freqs
+    (cell= (html! "#status" "%s" (if (zero? interval) "Stopped" "Running")))
+    (cell= (html! "#most-frequent" "%s" most-frequent))
+    (cell= (html! "#n-seen" "%s" n-seen))
+    (cell= (html! "#percent-even" "%s%" %-even))
+    (cell= (html! "#least-frequent" "%s" least-frequent))
+    (cell= (html! "#n-distinct" "%s" n-distinct))
+    (cell= (histogram! "#histogram" freqs
                       :bar-color "navy",
                       :bar-width 20,
                       :bar-height 100))))

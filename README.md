@@ -1,6 +1,9 @@
+<img src="https://raw.github.com/tailrecursion/javelin/master/img/javelin.png"
+alt="tailrecursion/javelin logo" title="tailrecursion/javelin logo"
+align="right" width="152"/>
+
 # Javelin Demos
 
-<img src="https://raw.github.com/alandipert/javelin/master/img/javelin.png?login=micha&token=b172f1b97acb55c16867dc106e30c646"
 alt="tailrecursion/javelin logo" title="tailrecursion/javelin logo"
 align="right" width="152"/>
 

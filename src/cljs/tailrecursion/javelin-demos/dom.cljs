@@ -10,8 +10,9 @@
   "Utilities for massaging strings and interacting with the DOM."
   (:require [clojure.browser.event :as event]
             [goog.dom.forms        :as form]
-            [goog.dom.classes      :as classes])
-  (:require-macros [tailrecursion.javelin.macros :refer [cell with-let]]))
+            [goog.dom.classes      :as classes]
+            [tailrecursion.javelin :refer [cell]])
+  (:require-macros [tailrecursion.javelin :refer [cell with-let]]))
 
 (defn by-id
   "If id-or-elem is a string, returns the element with the specified
@@ -122,7 +123,7 @@
   empty string."
   [id-or-elem & opts]
   (let [default (get (apply hash-map opts) :default "")]
-    (with-let [in-cell (cell 'default)]
+    (with-let [in-cell (cell default)]
       (apply input-to in-cell [] id-or-elem opts))))
 
 (defn add-remove!

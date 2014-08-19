@@ -9,8 +9,8 @@
 (ns tailrecursion.javelin-demos.form-validation
   (:require [tailrecursion.javelin-demos.dom :refer [input-to by-id validator]]
             [clojure.browser.event :as event]
-            tailrecursion.javelin)
-  (:require-macros [tailrecursion.javelin.macros :refer [cell]]))
+            [tailrecursion.javelin :refer [cell]])
+  (:require-macros [tailrecursion.javelin :refer [cell=]]))
 
 (def preds
   {:name     #(not (empty? %))
@@ -25,12 +25,12 @@
 
 (defn ^:export start []
 
-  (let [form (cell '{:name ""
-                     :phone ""
-                     :age 0
-                     :email ""
-                     :password ""})
-        valid? (cell (every? identity (map (fn [[k v]] ((preds k) v)) form)))]
+  (let [form (cell {:name ""
+                    :phone ""
+                    :age 0
+                    :email ""
+                    :password ""})
+        valid? (cell= (every? identity (map (fn [[k v]] ((preds k) v)) form)))]
 
     (input-to form [:name] "#name"
               :validator (validate "#name" (preds :name)))
@@ -45,7 +45,7 @@
     (input-to form [:password] "#password"
               :validator (validate "#password" (preds :password)))
 
-    (cell (aset (by-id "#submit") "disabled" (not valid?)))
+    (cell= (aset (by-id "#submit") "disabled" (not valid?)))
 
     (event/listen (by-id "#form")
                   "submit"

@@ -8,12 +8,12 @@
 
 (ns tailrecursion.javelin-demos.lettercount
   (:require [tailrecursion.javelin-demos.dom :refer [form-cell by-id html!]]
-            tailrecursion.javelin)
-  (:require-macros [tailrecursion.javelin.macros :refer [cell]]))
+            [tailrecursion.javelin :refer [cell]])
+  (:require-macros [tailrecursion.javelin :refer [cell=]]))
 
 (defn ^:export start []
 
   (let [text (form-cell "#text")
-        length (cell (count text))]
+        length (cell= (count text))]
     (.focus (by-id "#text"))
-    (cell (html! "#count" "Length: %s" length))))
+    (cell= (html! "#count" "Length: %s" length))))
